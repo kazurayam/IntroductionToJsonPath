@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-04-11T01:03:18" hostname="KAZUAKInoMacBook-Air-2.local" time="0.104">
+  <properties/>
+  <testcase name="test0()" classname="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" time="0.029"/>
+  <testcase name="test4_1_AccessToDocuments()" classname="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" time="0.072"/>
+  <system-out><![CDATA[{
+  "tool":
+  {
+    "jsonpath":
+    {
+      "creator":
+      {
+        "name": "Jayway Inc.",
+        "location":
+        [
+          "Malmo",
+          "San Francisco",
+          "Helsingborg"
+        ]
+      }
+    }
+  },
+
+  "book":
+  [
+    {
+      "title": "Beginning JSON",
+      "price": 49.99
+    },
+
+    {
+      "title": "JSON at Work",
+      "price": 29.99
+    }
+  ]
+}
+]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>
