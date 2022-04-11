@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kazurayam.introductiontojsonpath.ProductTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-11T05:26:31" hostname="KAZUAKInoMacBook-Air-2.local" time="0.09">
+  <properties/>
+  <testcase name="test_house_door_price()" classname="com.kazurayam.introductiontojsonpath.ProductTest" time="0.09"/>
+  <system-out><![CDATA[[{"id":1,"name":"A green door","price":12.5,"tags":["home","green"]}]
+12.5
+]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>
