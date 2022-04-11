@@ -1,9 +1,11 @@
 package com.kazurayam.introductiontojsonpath;
 
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,7 +63,7 @@ public class JaywayJsonPathTest {
         Path dataFile = Paths.get("./src/test/fixture/4_2_Predicates.json");
         String jsonDataSourceString = readData(dataFile);
         Filter expensiveFilter = Filter.filter(Criteria.where("price").gt(20.00));
-        List<Map<String,Object>> expensive =
+        List<Map<String, Object>> expensive =
                 JsonPath.parse(jsonDataSourceString)
                         .read("$['book'][?]", expensiveFilter);
         predicateUsageAssertionHelper(expensive);
@@ -76,5 +80,98 @@ public class JaywayJsonPathTest {
         assertFalse(predicate.toString().contains("Learn JSON in a DAY"));
         assertFalse(predicate.toString().contains("JSON: Questions and Answers"));
 
+    }
+
+    @Test
+    public void test6_1_GettingObjectDataGivenIDs() throws IOException {
+        Path dataFile = Paths.get("./src/test/fixture/6_Example.json");
+        String jsonString = readData(dataFile);
+        //System.out.println(jsonDataSourceString);
+        Object dataObject =
+                JsonPath.parse(jsonString).read("$[?(@.id == 2)]");
+        String dataString = dataObject.toString();
+        assertTrue(dataString.contains("2"));
+        assertTrue(dataString.contains("Quantum of Solace"));
+        assertTrue(dataString.contains("Twenty-second James Bond"));
+    }
+
+    @Test
+    public void test6_2_GettingTheMovieTitleGivenStarring() throws IOException {
+        Path dataFile = Paths.get("./src/test/fixture/6_Example.json");
+        String jsonString = readData(dataFile);
+        //System.out.println(jsonDataSourceString);
+        List<Map<String, Object>> dataList =
+                JsonPath.parse(jsonString)
+                        .read("$[?('Eva Green' in @['starring'])]");
+        String title = (String) dataList.get(0).get("title");
+        assertEquals("Casino Royale", title);
+    }
+
+    @Test
+    public void test6_3_CalculationOfTheTotalRevenue() throws IOException {
+        Path dataFile = Paths.get("./src/test/fixture/6_Example.json");
+        String jsonString = readData(dataFile);
+        DocumentContext context = JsonPath.parse(jsonString);
+        int length = context.read("$.length()");
+        long revenue = 0;
+        for (int i = 0; i < length; i++) {
+            revenue += context
+                    .read("$[" + i + "]['box office']",
+                            Long.class);
+        }
+        assertEquals(
+                594275385L + 591692078L + 1110526981L + 879376275L
+                , revenue);
+    }
+
+    @Test
+    public void test6_4_HighestRevenueMovie() throws IOException {
+        Path dataFile = Paths.get("./src/test/fixture/6_Example.json");
+        String jsonString = readData(dataFile);
+        DocumentContext context = JsonPath.parse(jsonString);
+        List<Object> revenueList = context.read("$[*]['box office']");
+        Integer[] revenueArray = revenueList.toArray(new Integer[0]);
+        Arrays.sort(revenueArray);
+        //
+        int highestRevenue = revenueArray[revenueArray.length - 1];
+        Configuration pathConfiguration =
+                Configuration.builder().options(
+                        Option.AS_PATH_LIST
+                ).build();
+        List<String> pathList =
+                JsonPath.using(pathConfiguration)
+                        .parse(jsonString)
+                        .read("$[?(@['box office'] == " + highestRevenue + ")]");
+        pathList.stream().forEach(System.out::println);
+        //
+        Map<String, String> dataRecord =
+                context.read(pathList.get(0));
+        String title = dataRecord.get("title");
+        //
+        assertEquals("Skyfall", title);
+    }
+
+    @Test
+    public void test6_5_LatestMovieOfADirector() throws IOException {
+        Path dataFile = Paths.get("./src/test/fixture/6_Example.json");
+        String jsonString = readData(dataFile);
+        DocumentContext context = JsonPath.parse(jsonString);
+        //
+        List<Map<String,Object>> dataList =
+                context.read("$[?(@.director == 'Sam Mendes')]");
+        //dataList.stream().forEach(System.out::println);
+        List<Object> dateList = new ArrayList<>();
+        for (Map<String,Object> item : dataList) {
+            Object date = item.get("release date");
+            dateList.add(date);
+        }
+        Long[] dateArray = dateList.toArray(new Long[0]);
+        Arrays.sort(dateArray);
+        //
+        long latestTime = dateArray[dateArray.length - 1];
+        List<Map<String,Object>> finalDataList =
+                context.read("$[?(@['director'] == 'Sam Mendes' && @['release date'] == " + latestTime + ")]");
+        String title = (String)finalDataList.get(0).get("title");
+        assertEquals("Spectre", title);
     }
 }

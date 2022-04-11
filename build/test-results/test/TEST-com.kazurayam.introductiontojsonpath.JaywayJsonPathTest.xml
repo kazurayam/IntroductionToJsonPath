@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-11T01:41:02" hostname="KAZUAKInoMacBook-Air-2.local" time="0.09">
+<testsuite name="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-11T03:03:21" hostname="KAZUAKInoMacBook-Air-2.local" time="0.079">
   <properties/>
-  <testcase name="test4_2_Predicates()" classname="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" time="0.09"/>
+  <testcase name="test6_5_LatestMovieOfADirector()" classname="com.kazurayam.introductiontojsonpath.JaywayJsonPathTest" time="0.079"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
